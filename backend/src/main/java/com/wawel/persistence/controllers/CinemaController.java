@@ -2,6 +2,8 @@ package com.wawel.persistence.controllers;
 
 import com.wawel.entity.movies.Movie;
 import com.wawel.request.AddMovieRequest;
+import com.wawel.request.BuyTicketsRequest;
+import com.wawel.response.GetUserInfoResponse;
 import com.wawel.service.movies.MoviesService;
 import com.wawel.request.EditMovieRequest;
 import com.wawel.response.GeneralMovieResponse;
@@ -49,5 +51,15 @@ public class CinemaController {
     @PostMapping("/archive/{movieId}")
     public ResponseEntity<String> archiveMovie(@PathVariable final Long movieId) {
         return service.archiveMovie(movieId);
+    }
+
+    @GetMapping("/users/{userId}")
+    public GetUserInfoResponse getUserInfo(@PathVariable final Long userId) {
+        return service.getUserInfo(userId);
+    }
+
+    @PostMapping("/tickets/buy")
+    public ResponseEntity<String> buyTickets(@RequestBody final BuyTicketsRequest request) {
+        return service.buyTickets(request);
     }
 }
