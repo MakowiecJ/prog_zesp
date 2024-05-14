@@ -179,7 +179,6 @@ public class MoviesService {
                 .email(user.getEmail())
                 .roles(user.getRoles())
                 .tickets(groupedTickets)
-                .reviews(user.getReviews().stream().map(MoviesMapper::toMovieReviewResponse).toList())
                 .watchedMovies(user.getWatchedMovies())
                 .build();
     }

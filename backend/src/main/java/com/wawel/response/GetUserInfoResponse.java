@@ -19,5 +19,4 @@ public class GetUserInfoResponse {
     private Set<Role> roles;
     private List<TicketsByScreeningResponse> tickets;
     private List<GeneralMovieResponse> watchedMovies;
-    private List<MovieReviewResponse> reviews;
 }
