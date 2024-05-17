@@ -1,19 +1,20 @@
 package com.wawel.persistence.controllers;
 
+import com.wawel.common.City;
 import com.wawel.entity.movies.Movie;
-import com.wawel.request.AddMovieRequest;
-import com.wawel.request.AddScreeningRequest;
-import com.wawel.request.BuyTicketsRequest;
+import com.wawel.request.*;
+import com.wawel.response.GetRepertoireResponse;
 import com.wawel.response.GetScreeningResponse;
 import com.wawel.response.GetUserInfoResponse;
 import com.wawel.service.movies.MoviesService;
-import com.wawel.request.EditMovieRequest;
 import com.wawel.response.GeneralMovieResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -78,5 +79,22 @@ public class CinemaController {
     @DeleteMapping("screening/{screeningId}")
     public ResponseEntity<String> deleteScreening(@PathVariable final Long screeningId) {
         return service.deleteScreening(screeningId);
+    }
+
+    @GetMapping("/repertoire")
+    public ResponseEntity<?> getRepertoire(
+            @RequestParam final City city,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) final LocalDate date) {
+        return service.getRepertoire(GetRepertoireRequest.of(city, date));
+    }
+
+    @PostMapping("/repertoire/edit")
+    public ResponseEntity<?> editRepertoire(final @RequestBody EditRepertoireRequest request) {
+        return service.editRepertoire(request);
+    }
+
+    @PostMapping("/repertoire")
+    public GetRepertoireResponse addRepertoire(@RequestBody final AddRepertoireRequest request) {
+        return service.addRepertoire(request);
     }
 }

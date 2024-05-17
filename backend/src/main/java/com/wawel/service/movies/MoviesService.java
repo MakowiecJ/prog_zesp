@@ -255,6 +255,42 @@ public class MoviesService {
         return null;
     }
 
+    public ResponseEntity<?> editScreening(final EditScreeningRequest request, final City city, final LocalDate date) {
+
+        if (request.getScreeningId() == null || screeningsRepository.findById(request.getScreeningId()).isEmpty()) {
+            addScreening(AddScreeningRequest.builder()
+                    .city(city)
+                    .screenName(request.getScreenName())
+                    .movieId(request.getMovieId())
+                    .date(date)
+                    .startTime(request.getStartTime())
+                    .movieType(request.getMovieType())
+                    .movieSoundType(request.getMovieSoundType())
+                    .build());
+            return new ResponseEntity<>("Pomyślnie dodano seans", HttpStatus.OK);
+        }
+        Optional<Screening> screening = screeningsRepository.findById(request.getScreeningId());
+
+        Screening screeningEntity = screening.get();
+
+        Cinema cinema = screeningEntity.getRepertoire().getCinema();
+        Screen screen = screensRepository.findByCinemaIdAndScreenName(cinema.getId(), request.getScreenName());
+        Optional<Movie> movie = moviesRepository.findById(request.getMovieId());
+        if (movie.isEmpty()) {
+            return new ResponseEntity<>("Nie znaleziono takiego filmu", HttpStatus.NOT_FOUND);
+        }
+
+        screeningEntity.setScreen(screen);
+        screeningEntity.setMovie(movie.get());
+        screeningEntity.setStartTime(request.getStartTime());
+        screeningEntity.setMovieType(request.getMovieType());
+        screeningEntity.setMovieSoundType(request.getMovieSoundType());
+
+        screeningsRepository.save(screeningEntity);
+
+        return new ResponseEntity<>("Pomyślnie edytowano seans", HttpStatus.OK);
+    }
+
     public ResponseEntity<String> deleteScreening(Long screeningId) {
         Optional<Screening> screening = screeningsRepository.findById(screeningId);
         if (screening.isEmpty()) {
@@ -262,5 +298,83 @@ public class MoviesService {
         }
         screeningsRepository.delete(screening.get());
         return new ResponseEntity<>("Pomyślnie usunięto seans", HttpStatus.OK);
+    }
+
+    public ResponseEntity<?> getRepertoire(GetRepertoireRequest request) {
+        Cinema cinema = cinemasRepository.findByCity(request.getCity());
+        Optional<Repertoire> repertoire = repertoireRepository.findByCinemaAndDate(cinema, request.getDate());
+
+        if (repertoire.isEmpty()) {
+            return new ResponseEntity<>(addRepertoire(AddRepertoireRequest.of(request.getCity(), request.getDate())), HttpStatus.OK);
+        }
+
+        List<RepertoireItem> items = new ArrayList<>();
+
+        List<Long> movieIds = new ArrayList<>();
+        Map<Long, GeneralMovieResponse> idToMovie = new HashMap<>();
+        Map<Long, List<ScreeningItem>> screeningToMovie = new HashMap<>();
+
+
+        if (repertoire.get().getScreenings() != null) {
+            for (Screening screening : repertoire.get().getScreenings()) {
+                if (screening.getRepertoire().getDate().equals(request.getDate())) {
+                    if (!movieIds.contains(screening.getMovie().getId())) {
+                        movieIds.add(screening.getMovie().getId());
+                        idToMovie.put(screening.getMovie().getId(), MoviesMapper.toMovieResponse(screening.getMovie()));
+
+                        screeningToMovie.put(screening.getMovie().getId(), List.of(ScreeningItem.builder()
+                                .screeningId(screening.getId())
+                                .startTime(screening.getStartTime())
+                                .screenName(screening.getScreen().getScreenName())
+                                .movieType(screening.getMovieType())
+                                .movieSoundType(screening.getMovieSoundType())
+                                .build()));
+                    } else {
+                        List<ScreeningItem> screeningItems = new ArrayList<>(screeningToMovie.get(screening.getMovie().getId()));
+
+                        screeningItems.add(ScreeningItem.builder()
+                                .screeningId(screening.getId())
+                                .startTime(screening.getStartTime())
+                                .screenName(screening.getScreen().getScreenName())
+                                .movieType(screening.getMovieType())
+                                .movieSoundType(screening.getMovieSoundType())
+                                .build());
+                        screeningToMovie.replace(screening.getMovie().getId(), screeningItems);
+                    }
+                }
+
+            }
+            for (Map.Entry<Long, List<ScreeningItem>> entry : screeningToMovie.entrySet()) {
+                items.add(new RepertoireItem(idToMovie.get(entry.getKey()), entry.getValue()));
+            }
+
+        }
+        return new ResponseEntity<>(GetRepertoireResponse.of(request.getCity(), request.getDate(), items), HttpStatus.OK);
+
+    }
+
+    public GetRepertoireResponse addRepertoire(AddRepertoireRequest request) {
+        Cinema cinema = cinemasRepository.findByCity(request.getCity());
+
+        repertoireRepository.save(Repertoire.builder()
+                .cinema(cinema)
+                .date(request.getDate())
+                .build());
+        return GetRepertoireResponse.of(request.getCity(), request.getDate(), new ArrayList<>());
+    }
+
+    public ResponseEntity<?> editRepertoire(EditRepertoireRequest request) {
+        Cinema cinema = cinemasRepository.findByCity(request.getCity());
+        Optional<Repertoire> repertoire = repertoireRepository.findByCinemaAndDate(cinema, request.getDate());
+
+        if (repertoire.isEmpty()) {
+            addRepertoire(AddRepertoireRequest.of(request.getCity(), request.getDate()));
+        }
+
+        for (EditScreeningRequest editScreeningRequest : request.getScreenings()) {
+            editScreening(editScreeningRequest, request.getCity(), request.getDate());
+        }
+
+        return new ResponseEntity<>("Pomyślnie edytowano repertuar", HttpStatus.OK);
     }
 }
