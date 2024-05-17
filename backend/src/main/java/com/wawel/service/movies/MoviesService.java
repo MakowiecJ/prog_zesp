@@ -2,8 +2,11 @@ package com.wawel.service.movies;
 
 import com.wawel.common.*;
 import com.wawel.entity.auth.User;
+import com.wawel.entity.cinema.Cinema;
+import com.wawel.entity.cinema.Screen;
 import com.wawel.entity.cinema.Ticket;
 import com.wawel.entity.movies.Movie;
+import com.wawel.entity.movies.Repertoire;
 import com.wawel.entity.movies.Screening;
 import com.wawel.persistence.repositories.*;
 import com.wawel.persistence.repositories.auth.UsersRepository;
@@ -35,6 +38,15 @@ public class MoviesService {
 
     @Autowired
     private ScreeningsRepository screeningsRepository;
+
+    @Autowired
+    private CinemaRepository cinemasRepository;
+
+    @Autowired
+    private ScreensRepository screensRepository;
+
+    @Autowired
+    private RepertoireRepository repertoireRepository;
 
     public List<GeneralMovieResponse> getMovies() {
         return moviesRepository.findAll().stream()
@@ -181,5 +193,74 @@ public class MoviesService {
                 .tickets(groupedTickets)
                 .watchedMovies(user.getWatchedMovies())
                 .build();
+    }
+
+    public GetScreeningResponse getScreening(final Long screeningId) {
+        Screening screening = screeningsRepository.findById(screeningId).orElseThrow();
+        return GetScreeningResponse.builder()
+                .screenId(screeningId)
+                .movieId(screening.getMovie().getId())
+                .repertoireId(screening.getRepertoire().getId())
+                .date(screening.getRepertoire().getDate())
+                .startTime(screening.getStartTime())
+                .movieType(screening.getMovieType())
+                .movieSoundType(screening.getMovieSoundType())
+                .seats(screening.getSeats())
+                .build();
+    }
+
+    public ResponseEntity<String> addScreening(AddScreeningRequest request) {
+        Movie movie = moviesRepository.findById(request.getMovieId()).orElseThrow();
+
+        if (movie.getStatus().equals(Status.ZARCHIWIZOWANY)) {
+            return new ResponseEntity<>("Nie można dodać filmu, który jest zarchiwizowany", HttpStatus.BAD_REQUEST);
+        }
+
+        Cinema cinema = cinemasRepository.findByCity(request.getCity());
+        Screen screen = screensRepository.findByCinemaIdAndScreenName(cinema.getId(), request.getScreenName());
+        Optional<Repertoire> repertoire = repertoireRepository.findByCinemaAndDate(cinema, request.getDate());
+
+        if (repertoire.isEmpty()) {
+            Repertoire newRepertoire = repertoireRepository.save(Repertoire.builder()
+                    .cinema(cinema)
+                    .date(request.getDate())
+                    .build());
+
+            Screening screening = Screening.builder()
+                    .screen(screen)
+                    .movie(movie)
+                    .repertoire(newRepertoire)
+                    .startTime(request.getStartTime())
+                    .movieType(request.getMovieType())
+                    .movieSoundType(request.getMovieSoundType())
+                    .seats(Screening.newSeats())
+                    .build();
+
+            screeningsRepository.save(screening);
+
+        } else {
+            Screening screening = Screening.builder()
+                    .screen(screen)
+                    .movie(movie)
+                    .repertoire(repertoire.get())
+                    .startTime(request.getStartTime())
+                    .movieType(request.getMovieType())
+                    .movieSoundType(request.getMovieSoundType())
+                    .seats(Screening.newSeats())
+                    .build();
+
+            screeningsRepository.save(screening);
+        }
+
+        return null;
+    }
+
+    public ResponseEntity<String> deleteScreening(Long screeningId) {
+        Optional<Screening> screening = screeningsRepository.findById(screeningId);
+        if (screening.isEmpty()) {
+            return new ResponseEntity<>("Nie znaleziono seansu o id: " + screeningId, HttpStatus.NOT_FOUND);
+        }
+        screeningsRepository.delete(screening.get());
+        return new ResponseEntity<>("Pomyślnie usunięto seans", HttpStatus.OK);
     }
 }

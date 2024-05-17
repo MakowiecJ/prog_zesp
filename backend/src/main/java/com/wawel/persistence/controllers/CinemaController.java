@@ -2,7 +2,9 @@ package com.wawel.persistence.controllers;
 
 import com.wawel.entity.movies.Movie;
 import com.wawel.request.AddMovieRequest;
+import com.wawel.request.AddScreeningRequest;
 import com.wawel.request.BuyTicketsRequest;
+import com.wawel.response.GetScreeningResponse;
 import com.wawel.response.GetUserInfoResponse;
 import com.wawel.service.movies.MoviesService;
 import com.wawel.request.EditMovieRequest;
@@ -61,5 +63,20 @@ public class CinemaController {
     @PostMapping("/tickets/buy")
     public ResponseEntity<String> buyTickets(@RequestBody final BuyTicketsRequest request) {
         return service.buyTickets(request);
+    }
+
+    @GetMapping("/screening/{screeningId}")
+    public GetScreeningResponse getScreening(@PathVariable final Long screeningId) {
+        return service.getScreening(screeningId);
+    }
+
+    @PostMapping("/screening")
+    public ResponseEntity<String> addScreening(@RequestBody final AddScreeningRequest request) {
+        return service.addScreening(request);
+    }
+
+    @DeleteMapping("screening/{screeningId}")
+    public ResponseEntity<String> deleteScreening(@PathVariable final Long screeningId) {
+        return service.deleteScreening(screeningId);
     }
 }
