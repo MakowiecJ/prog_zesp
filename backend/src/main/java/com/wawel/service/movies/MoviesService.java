@@ -77,10 +77,10 @@ public class MoviesService {
     public ResponseEntity<String> deleteMovie(final Long movieId) {
         Optional<Movie> toDelete = moviesRepository.findById(movieId);
         if (toDelete.isEmpty()) {
-            return new ResponseEntity<>("Nie znaleziono filmu o podanym id", HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("Movie with id: " + movieId + " does not exist", HttpStatus.NOT_FOUND);
         }
         moviesRepository.delete(toDelete.get());
-        return new ResponseEntity<>("Pomyślnie usunięto film", HttpStatus.OK);
+        return new ResponseEntity<>("Movie deleted successfully", HttpStatus.OK);
     }
 
     public ResponseEntity<String> archiveMovie(Long movieId) {
@@ -88,13 +88,13 @@ public class MoviesService {
         movie.setStatus(Status.ZARCHIWIZOWANY);
         moviesRepository.save(movie);
 
-        return new ResponseEntity<>("Pomyślnie zarchiwizowano film", HttpStatus.OK);
+        return new ResponseEntity<>("Movie archived successfully", HttpStatus.OK);
     }
 
     public ResponseEntity<String> editMovie(EditMovieRequest request) {
         Optional<Movie> movie = moviesRepository.findById(request.getMovieId());
         if (movie.isEmpty()) {
-            return new ResponseEntity<>("Film o podanym id nie istnieje", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Movie with id: " + request.getMovieId() + " does not exist", HttpStatus.BAD_REQUEST);
         }
         Movie movieEntity = movie.get();
         movieEntity.setTitle(request.getTitle());
@@ -107,7 +107,7 @@ public class MoviesService {
         movieEntity.setDescription(request.getDescription());
 
         moviesRepository.save(movieEntity);
-        return new ResponseEntity<>("Pomyślnie edytowano film", HttpStatus.OK);
+        return new ResponseEntity<>("Movie edited successfully", HttpStatus.OK);
     }
 
     public ResponseEntity<String> buyTickets(BuyTicketsRequest request) {
@@ -115,13 +115,13 @@ public class MoviesService {
             Screening screening = screeningsRepository.findById(request.getScreeningId()).orElseThrow();
             String[][] seats = screening.getSeats();
             if (screening.getRepertoire().getDate().isBefore(LocalDate.now())) {
-                return new ResponseEntity<>("Seans już się odbył", HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>("Screening has already been played", HttpStatus.BAD_REQUEST);
             }
 
             if (seats[ticket.getSeatRow()][ticket.getSeatNumber()].equals(Availability.ZAJETE.name())
                     || seats[ticket.getSeatRow()][ticket.getSeatNumber()].equals(Availability.NIE_ISTNIEJE.name())) {
                 return new ResponseEntity<>(
-                        "Miejsce: [" + ticket.getSeatRow() + "][" + ticket.getSeatNumber() + "] zajęte bądź nie istnieje",
+                        "Seat: [" + ticket.getSeatRow() + "][" + ticket.getSeatNumber() + "] is taken",
                         HttpStatus.BAD_REQUEST);
             }
 
@@ -153,7 +153,7 @@ public class MoviesService {
 
             ticketsRepository.save(ticketEntity);
         }
-        return new ResponseEntity<>("Pomyślnie zakupiono biliety", HttpStatus.OK);
+        return new ResponseEntity<>("Tickets bought successfully", HttpStatus.OK);
     }
 
     public GetUserInfoResponse getUserInfo(Long userId) {
@@ -213,7 +213,7 @@ public class MoviesService {
         Movie movie = moviesRepository.findById(request.getMovieId()).orElseThrow();
 
         if (movie.getStatus().equals(Status.ZARCHIWIZOWANY)) {
-            return new ResponseEntity<>("Nie można dodać filmu, który jest zarchiwizowany", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("The movie with id: " + request.getMovieId() + " is archived", HttpStatus.BAD_REQUEST);
         }
 
         Cinema cinema = cinemasRepository.findByCity(request.getCity());
@@ -267,7 +267,7 @@ public class MoviesService {
                     .movieType(request.getMovieType())
                     .movieSoundType(request.getMovieSoundType())
                     .build());
-            return new ResponseEntity<>("Pomyślnie dodano seans", HttpStatus.OK);
+            return new ResponseEntity<>("Screening added successfully", HttpStatus.OK);
         }
         Optional<Screening> screening = screeningsRepository.findById(request.getScreeningId());
 
@@ -277,7 +277,7 @@ public class MoviesService {
         Screen screen = screensRepository.findByCinemaIdAndScreenName(cinema.getId(), request.getScreenName());
         Optional<Movie> movie = moviesRepository.findById(request.getMovieId());
         if (movie.isEmpty()) {
-            return new ResponseEntity<>("Nie znaleziono takiego filmu", HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("Movie with id:" + request.getMovieId() + " not found", HttpStatus.NOT_FOUND);
         }
 
         screeningEntity.setScreen(screen);
@@ -288,16 +288,16 @@ public class MoviesService {
 
         screeningsRepository.save(screeningEntity);
 
-        return new ResponseEntity<>("Pomyślnie edytowano seans", HttpStatus.OK);
+        return new ResponseEntity<>("Screening edited successfully", HttpStatus.OK);
     }
 
     public ResponseEntity<String> deleteScreening(Long screeningId) {
         Optional<Screening> screening = screeningsRepository.findById(screeningId);
         if (screening.isEmpty()) {
-            return new ResponseEntity<>("Nie znaleziono seansu o id: " + screeningId, HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("Screening with id: " + screeningId + " not found", HttpStatus.NOT_FOUND);
         }
         screeningsRepository.delete(screening.get());
-        return new ResponseEntity<>("Pomyślnie usunięto seans", HttpStatus.OK);
+        return new ResponseEntity<>("Screening deleted successfully", HttpStatus.OK);
     }
 
     public ResponseEntity<?> getRepertoire(GetRepertoireRequest request) {
@@ -375,6 +375,6 @@ public class MoviesService {
             editScreening(editScreeningRequest, request.getCity(), request.getDate());
         }
 
-        return new ResponseEntity<>("Pomyślnie edytowano repertuar", HttpStatus.OK);
+        return new ResponseEntity<>("Repertoire edited successfully", HttpStatus.OK);
     }
 }
