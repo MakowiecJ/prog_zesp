@@ -1,5 +1,6 @@
 package com.wawel.persistence.controllers;
 
+import com.wawel.configuration.JwtUtil;
 import com.wawel.dto.LoginDto;
 import com.wawel.dto.SignUpDto;
 import com.wawel.entity.auth.Role;
@@ -14,6 +15,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,49 +38,50 @@ public class AuthController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private JwtUtil jwtUtil;
+
     @PostMapping("/signin")
-    public ResponseEntity<GeneralUserInfoResponse> authenticateUser(@RequestBody LoginDto loginDto){
-        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-                loginDto.getUsernameOrEmail(), loginDto.getPassword()));
+    public ResponseEntity<GeneralUserInfoResponse> authenticateUser(@RequestBody LoginDto loginDto) {
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(loginDto.getUsernameOrEmail(), loginDto.getPassword()));
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        User user = usersRepository.findByUsernameOrEmail(loginDto.getUsernameOrEmail(), loginDto.getUsernameOrEmail()).orElseThrow();
+        User user = usersRepository.findByUsernameOrEmail(loginDto.getUsernameOrEmail(), loginDto.getUsernameOrEmail())
+                .orElseThrow();
         GeneralUserInfoResponse response = GeneralUserInfoResponse.builder()
                 .userId(user.getId())
                 .username(user.getUsername())
                 .email(user.getEmail())
                 .roles(user.getRoles())
+                .token(jwtUtil.generateToken((UserDetails) authentication.getPrincipal())) // Add JWT token to response
                 .build();
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<String> registerUser(@RequestBody SignUpDto signUpDto){
-
-        // add check for username exists in a DB
-        if(Boolean.TRUE.equals(usersRepository.existsByUsername(signUpDto.getUsername()))){
+    public ResponseEntity<String> registerUser(@RequestBody SignUpDto signUpDto) {
+        if (Boolean.TRUE.equals(usersRepository.existsByUsername(signUpDto.getUsername()))) {
             return new ResponseEntity<>("Username is already taken!", HttpStatus.BAD_REQUEST);
         }
 
-        // add check for email exists in DB
-        if(Boolean.TRUE.equals(usersRepository.existsByEmail(signUpDto.getEmail()))){
+        if (Boolean.TRUE.equals(usersRepository.existsByEmail(signUpDto.getEmail()))) {
             return new ResponseEntity<>("Email is already taken!", HttpStatus.BAD_REQUEST);
         }
 
-        // create user object
         User user = new User();
         user.setUsername(signUpDto.getUsername());
         user.setEmail(signUpDto.getEmail());
         user.setPassword(passwordEncoder.encode(signUpDto.getPassword()));
 
-        Role roles = rolesRepository.findByName("role_user").orElseThrow();
+        Role roles = rolesRepository.findByName("ROLE_USER").orElseThrow();
         user.setRoles(Collections.singleton(roles));
 
         usersRepository.save(user);
 
         return new ResponseEntity<>("User registered successfully", HttpStatus.OK);
-
     }
 }
+

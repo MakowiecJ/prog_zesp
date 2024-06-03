@@ -195,9 +195,9 @@ CREATE TABLE movies
 );
 
 INSERT INTO roles (name)
-VALUES ('role_admin');
+VALUES ('ROLE_ADMIN');
 INSERT INTO roles (name)
-VALUES ('role_user');
+VALUES ('ROLE_USER');
 
 INSERT INTO users (username, password, email)
 VALUES ('admin', '$2a$10$uuXzvyevIXLJWmkA7WC2e.xM8xZZHJT0v3qdmcolz2Y3G.p2oEGjW', 'admin@gmail.com'),
