@@ -1,5 +1,7 @@
 package com.wawel.common;
 
 public enum MovieSoundType {
-    LEKTOR, DUBBING, NAPISY
+    LECTOR,
+    DUBBING,
+    SUBTITLES
 }

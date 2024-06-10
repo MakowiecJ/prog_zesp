@@ -3,7 +3,6 @@ package com.wawel.request;
 import com.wawel.common.City;
 import com.wawel.common.MovieSoundType;
 import com.wawel.common.MovieType;
-import com.wawel.common.ScreenName;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -18,7 +17,7 @@ import java.time.LocalTime;
 @Builder
 public class AddScreeningRequest {
     private City city;
-    private ScreenName screenName;
+    private String screenName;
     private Long movieId;
     private LocalDate date;
     private LocalTime startTime;

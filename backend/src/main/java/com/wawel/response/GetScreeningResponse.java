@@ -7,20 +7,32 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
+import java.time.OffsetDateTime;
+import java.util.UUID;
 
 @Builder
 @Getter
 @ToString
 @AllArgsConstructor
 public class GetScreeningResponse {
-    private Long screenId;
-    private Long movieId;
-    private Long repertoireId;
-    private LocalDate date;
-    private LocalTime startTime;
+    private UUID screeningId;
+    private OffsetDateTime screeningStart;
+    private OffsetDateTime screeningEnd;
+    private UUID screenId;
+    private UUID movieId;
     private MovieType movieType;
     private MovieSoundType movieSoundType;
-    private String[][] seats;
+
+    private String title;
+    private String description;
+    private String genre;
+    private Integer adsDuration;
+    private Integer movieDuration;
+    private Integer cleaningServiceDuration;
+    private String bigImageSource;
+    private String posterSource;
+    private String trailerSource;
+
+//    status
+//    averageRating
 }

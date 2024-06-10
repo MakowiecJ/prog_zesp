@@ -5,12 +5,13 @@ import com.wawel.common.MovieSoundType;
 import com.wawel.common.MovieType;
 import com.wawel.entity.cinema.Screen;
 import com.wawel.entity.cinema.Ticket;
-import com.wawel.entity.converter.SeatsConverter;
 import lombok.*;
 
 import javax.persistence.*;
-import java.time.LocalTime;
+import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.UUID;
 
 @Entity
 @Table(name = "screenings")
@@ -22,26 +23,19 @@ import java.util.List;
 @Setter
 public class Screening {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue
+    private UUID id;
 
     @ManyToOne
-    @JoinColumn(name = "screen_id")
+//    @JoinColumn(name = "screen_id")
     private Screen screen;
 
     @ManyToOne
     @JoinColumn(name = "movie_id")
     private Movie movie;
 
-    @ManyToOne
-    @JoinColumn(name = "repertoire_id")
-    private Repertoire repertoire;
-
-    @Convert(converter = SeatsConverter.class)
-    private String[][] seats = newSeats();
-
     @Column(name = "start_time")
-    private LocalTime startTime;
+    private OffsetDateTime startDate;
 
     @Column(name = "movie_type")
     @Enumerated(EnumType.STRING)
@@ -68,6 +62,6 @@ public class Screening {
         return seats;
     }
     public void changeSeatStatus(final int row, final int col) {
-        this.seats[row][col] = Availability.ZAJETE.name();
+//        this.seats[row][col] = Availability.ZAJETE.name();
     }
 }

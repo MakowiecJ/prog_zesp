@@ -1,11 +1,15 @@
 package com.wawel.persistence.repositories;
 
-import com.wawel.common.ScreenName;
 import com.wawel.entity.cinema.Screen;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+import java.util.UUID;
+
 @Repository
-public interface ScreensRepository extends JpaRepository<Screen, Long> {
-    Screen findByCinemaIdAndScreenName(final Long cinemaId, final ScreenName screenName);
+public interface ScreensRepository extends JpaRepository<Screen, UUID> {
+    @Query(value = "SELECT * FROM SCREENS WHERE CINEMA_ID = ?", nativeQuery = true)
+    List<Screen> findByCinemaId(final UUID cinemaId);
 }

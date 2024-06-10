@@ -1,7 +1,5 @@
 package com.wawel.response;
 
-import com.wawel.common.City;
-import com.wawel.common.ScreenName;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -18,12 +16,12 @@ import java.util.List;
 @NoArgsConstructor
 public class TicketsByScreeningResponse {
     private Long screeningId;
-    private City city;
+    private String city;
     private LocalDate date;
     private LocalTime startTime;
     private String movieTitle;
     private Long movieId;
-    private ScreenName screenName;
+    private String screenName;
     private List<TicketResponse> tickets;
 
     public void addTicket(final TicketResponse ticket) {

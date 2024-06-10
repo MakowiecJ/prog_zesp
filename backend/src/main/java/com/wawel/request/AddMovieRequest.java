@@ -15,7 +15,11 @@ public class AddMovieRequest {
 
     private int minAge;
 
-    private int duration;
+    private int adsDuration;
+
+    private int movieDuration;
+
+    private int cleaningServiceDuration;
 
     private String posterSource;
 

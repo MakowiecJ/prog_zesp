@@ -1,8 +1,10 @@
 package com.wawel.service.mapper;
 
+import com.wawel.entity.cinema.Cinema;
 import com.wawel.entity.cinema.Ticket;
 import com.wawel.entity.movies.Movie;
 import com.wawel.response.GeneralMovieResponse;
+import com.wawel.response.GetCinemasResponse;
 import com.wawel.response.TicketResponse;
 import lombok.experimental.UtilityClass;
 
@@ -11,16 +13,29 @@ import java.nio.charset.StandardCharsets;
 @UtilityClass
 public class MoviesMapper {
 
+    public static GetCinemasResponse toCinemaResponse(final Cinema cinema) {
+        return GetCinemasResponse.builder()
+                .id(cinema.getId())
+                .street(cinema.getStreet())
+                .postalCode(cinema.getPostalCode())
+                .city(cinema.getCity())
+                .mailAddress(cinema.getMailAddress())
+                .phoneNumber(cinema.getPhoneNumber())
+                .build();
+    }
+
     public static GeneralMovieResponse toMovieResponse(final Movie movie) {
         return GeneralMovieResponse.builder()
                 .id(movie.getId())
                 .title(movie.getTitle())
                 .genre(movie.getGenre())
                 .minAge(movie.getMinAge())
-                .duration(movie.getDuration())
+                .adsDuration(movie.getAdsDuration())
+                .movieDuration(movie.getMovieDuration())
+                .cleaningServiceDuration(movie.getCleaningServiceDuration())
                 .status(movie.getStatus())
-                .posterSource(blobToString(movie.getPosterSource()))
-                .bigImageSource(blobToString(movie.getBigImageSource()))
+                .posterSource(movie.getPosterSource())
+                .bigImageSource(movie.getBigImageSource())
                 .trailerSource(movie.getTrailerSource())
                 .description(movie.getDescription())
                 .averageRating(movie.getAverageRating())
@@ -34,16 +49,5 @@ public class MoviesMapper {
                 .seatRow(ticket.getSeatRow())
                 .seatNumber(ticket.getSeatNumber())
                 .build();
-    }
-
-//    public static String blobToString(Blob blob) throws SQLException, IOException {
-//        if (blob == null) return null;
-//        byte[] bdata = blob.getBytes(1, (int) blob.length());
-//        return new String(bdata);
-//    }
-
-    public static String blobToString(final byte[] blob) {
-        if (blob == null) return null;
-        return new String(blob, StandardCharsets.UTF_8);
     }
 }

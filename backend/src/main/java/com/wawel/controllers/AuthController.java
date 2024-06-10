@@ -1,4 +1,4 @@
-package com.wawel.persistence.controllers;
+package com.wawel.controllers;
 
 import com.wawel.dto.LoginDto;
 import com.wawel.dto.SignUpDto;

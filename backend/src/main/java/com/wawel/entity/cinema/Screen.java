@@ -1,14 +1,14 @@
 package com.wawel.entity.cinema;
 
-import com.wawel.common.ScreenName;
 import com.wawel.entity.movies.Screening;
 import lombok.*;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.UUID;
 
 @Entity
-@Table(name = "screen")
+@Table(name = "screens")
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -17,18 +17,14 @@ import java.util.List;
 public class Screen {
     @Id
     @GeneratedValue
-    private Long id;
+    private UUID id;
 
     @Column(name = "screen_name")
-    @Enumerated(EnumType.STRING)
-    private ScreenName screenName;
+    private String screenName;
 
     private int capacity;
 
-    @ManyToOne
-    @JoinColumn(name = "cinema_id")
-    private Cinema cinema;
-
-    @OneToMany(mappedBy = "screen")
-    private List<Screening> screenings;
+    public Screen(UUID screeningId) {
+        this.id = screeningId;
+    }
 }

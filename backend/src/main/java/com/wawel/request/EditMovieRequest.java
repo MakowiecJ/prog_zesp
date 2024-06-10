@@ -4,26 +4,29 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.ToString;
 
+import java.util.Optional;
+
 @Getter
 @ToString
 @AllArgsConstructor
 public class EditMovieRequest {
+    private Optional<String> title;
 
-    private Long movieId;
+    private Optional<String> genre;
 
-    private String title;
+    private Optional<Integer> minAge;
 
-    private String genre;
+    private Optional<Integer> adsDuration;
 
-    private int minAge;
+    private Optional<Integer> movieDuration;
 
-    private int duration;
+    private Optional<Integer> cleaningServiceDuration;
 
-    private String posterSource;
+    private Optional<String> posterSource;
 
-    private String bigImageSource;
+    private Optional<String> bigImageSource;
 
-    private String trailerSource;
+    private Optional<String> trailerSource;
 
-    private String description;
+    private Optional<String> description;
 }

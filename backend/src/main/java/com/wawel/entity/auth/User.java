@@ -2,14 +2,12 @@ package com.wawel.entity.auth;
 
 import com.wawel.entity.cinema.Ticket;
 import com.wawel.entity.movies.Movie;
-import com.wawel.entity.movies.Review;
 import com.wawel.response.GeneralMovieResponse;
 import com.wawel.service.mapper.MoviesMapper;
 import lombok.Data;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -33,8 +31,8 @@ public class User {
 
     private String password;
 
-    @OneToMany(mappedBy = "user")
-    private List<Review> reviews;
+//    @OneToMany(mappedBy = "user")
+//    private List<Review> reviews;
 
     @OneToMany(mappedBy = "user")
     private List<Ticket> tickets;
@@ -48,9 +46,9 @@ public class User {
     public List<GeneralMovieResponse> getWatchedMovies() {
         Set<Movie> movies = new HashSet<>();
         for (Ticket ticket : tickets) {
-            if (ticket.getScreening().getRepertoire().getDate().isBefore(LocalDate.now())) {
-                movies.add(ticket.getScreening().getMovie());
-            }
+//            if (ticket.getScreening().getRepertoire().getDate().isBefore(LocalDate.now())) {
+//                movies.add(ticket.getScreening().getMovie());
+//            }
         }
 
         return movies.stream()
