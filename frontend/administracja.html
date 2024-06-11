@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/admin.css">
+    <title>Kino Wawel</title>
+    <base href="index.html">
+    <script src="scripts/admin%20authorization.js"></script>
+</head>
+<body>
+    <header>
+        <h1><a href="#">Kino Wawel</a></h1>
+        <nav>
+            <ul>
+                <li><a href="repertuar.html">Repertuar</a></li>
+                <li><a href="wydarzenia.html">Wydarzenia</a></li>
+                <li><a href="kontakt.html">Kontakt</a></li>
+                <li class="signin">
+                    <a href="logowanie.html">Logowanie</a>
+                    <span>|</span>
+                    <a href="rejestracja.html">Rejestracja</a>
+                </li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <aside>
+            <div class="wrapper left-gradient-border">
+                <h2><span class="capital">P</span>anel kontrolny</h2>
+                <ul>
+                    <li><a href="administracja.html">Filmy</a></li>
+                    <li id="screeningsBtn">Seanse</li>
+                    <li>
+                        <ul id="screenings">
+                            <li><a href="edytuj%20seanse.htmlml?city=KATOWICE">Katowice</a></li>
+                            <li><a href="edytuj%20seanse.htmlml?city=KRAKOW">Kraków</a></li>
+                            <li><a href="edytuj%20seanse.htmlml?city=LUBAN">Lubań</a></li>
+                            <li><a href="edytuj%20seanse.htmlml?city=OPOLE">Opole</a></li>
+                            <li><a href="edytuj%20seanse.htmlml?city=WROCLAW">Wrocław</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </aside>
+        <section>
+            <header class="bottom-gradient-border">
+                <h2><span class="capital">F</span>ilmy</h2>
+                <a href="edytuj%20film.htmlml" class="add btn cta-1">Dodaj nowy</a>
+            </header>
+            <div class="lds-ring">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+        </section>
+    </main>
+    <script src="scripts/main.js"></script>
+    <script src="scripts/admin.js"></script>
+    <script src="scripts/admin%20main.js"></script>
+</body>
+</html>

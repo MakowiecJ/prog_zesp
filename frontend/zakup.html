@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/purchase.css">
+    <title>Kino Wawel</title>
+    <base href="index.html">
+</head>
+<body>
+    <header>
+        <h1><a href="#">Kino Wawel</a></h1>
+        <nav>
+            <ul>
+                <li><a href="repertuar.html">Repertuar</a></li>
+                <li><a href="wydarzenia.html">Wydarzenia</a></li>
+                <li><a href="kontakt.html">Kontakt</a></li>
+                <li class="signin">
+                    <a href="logowanie.html">Logowanie</a>
+                    <span>|</span>
+                    <a href="rejestracja.html">Rejestracja</a>
+                </li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <form action="przetwarzanie.html?test=123" method="GET">
+            <input type="hidden" name="screeningId">
+            <section id="hall">
+                <h2><span class="capital">W</span>ybór <span class="capital">M</span>iejsc</h2>
+                <div id="legend">
+                    <div>
+                        <span>Wybrane miejsca</span>
+                        <div class="seat chosen"></div>
+                    </div>
+                    <div>
+                        <span>Wolne miejsca</span>
+                        <div class="seat free"></div>
+                    </div>
+                    <div>
+                        <span>Zajęte miejsca</span>
+                        <div class="seat taken"></div>
+                    </div>
+                </div>
+                <div id="screen"></div>
+                <fieldset id="seats">
+                </fieldset>
+            </section>
+            <aside>
+                <h2><span class="capital">T</span>woje <span class="capital">B</span>ilety</h2>
+                <div id="tickets" data-chosen="0" data-required="0">
+                    <div class="ticket-type">
+                        <div class="counter">
+                            <div class="minus">
+                                <span></span>
+                            </div>
+                            <div>    
+                                <span class="ticket-counter" data-price="37">0</span>
+                                <input type="number" name="normal" value="0">
+                            </div>
+                            <div class="plus">
+                                <span></span>
+                                <span></span>
+                            </div>
+                        </div>
+                        <p>normalny <span class="price">37</span>,-</p>
+                    </div>
+                    <div class="ticket-type">
+                        <div class="counter">
+                            <div class="minus">
+                                <span></span>
+                            </div>
+                            <div>    
+                                <span class="ticket-counter" data-price="31">0</span>
+                                <input type="number" name="half" value="0">
+                            </div>
+                            <div class="plus">
+                                <span></span>
+                                <span></span>
+                            </div>
+                        </div>
+                        <p>ulgowy <span class="price">31</span>,-</p>
+                    </div>
+                    <div class="ticket-type">
+                        <div class="counter">
+                            <div class="minus">
+                                <span></span>
+                            </div>
+                            <div id="validation">
+                                <span class="ticket-counter" data-price="27">0</span>
+                                <input type="number" name="senior" value="0">
+                                <input type="radio" name="validation" required>
+                            </div>
+                            <div class="plus">
+                                <span></span>
+                                <span></span>
+                            </div>
+                        </div>
+                        <p>senior <span class="price">27</span>,-</p>
+                    </div>
+                </div>
+                <div id="inputs">
+                    <input type="email" name="email" placeholder="Wprowadź adres e-mail" required>
+                    <div>
+                        <input type="text" name="discount" placeholder="Kod rabatowy">
+                        <button><span>&#8594;</span></button>
+                    </div>
+                </div>
+                <div id="summary">
+                    <h3>Do zapłaty: </h3>
+                    <p><span>0</span> zł</p>
+                </div>
+                <div id="buttons">
+                    <a href="repertuar.html" class="cta-3 btn">Anuluj</a>
+                    <button type="submit" class="cta-1">Zapłać</button>
+                </div>
+            </aside>
+        </form>
+    </main>
+    <script src="scripts/main.js"></script>
+    <script src="scripts/purchase.js"></script>
+</body>
+</html>

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/admin.css">
+    <link rel="stylesheet" href="styles/edit%20screenings.css">
+    <title>Kino Wawel</title>
+    <base href="index.html">
+    <script src="scripts/admin%20authorization.js"></script>
+</head>
+<body>
+    <header>
+        <h1><a href="#">Kino Wawel</a></h1>
+        <nav>
+            <ul>
+                <li><a href="repertuar.html">Repertuar</a></li>
+                <li><a href="wydarzenia.html">Wydarzenia</a></li>
+                <li><a href="kontakt.html">Kontakt</a></li>
+                <li class="signin">
+                    <a href="logowanie.html">Logowanie</a>
+                    <span>|</span>
+                    <a href="rejestracja.html">Rejestracja</a>
+                </li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <aside>
+            <div class="wrapper left-gradient-border">
+                <h2><span class="capital">P</span>anel kontrolny</h2>
+                <ul>
+                    <li><a href="administracja.html">Filmy</a></li>
+                    <li id="screeningsBtn">Seanse</li>
+                    <li>
+                        <ul id="screenings" class="active">
+                            <li><a href="edytuj seanse.html?city=KATOWICE">Katowice</a></li>
+                            <li><a href="edytuj seanse.html?city=KRAKOW">Kraków</a></li>
+                            <li><a href="edytuj seanse.html?city=LUBAN">Lubań</a></li>
+                            <li><a href="edytuj seanse.html?city=OPOLE">Opole</a></li>
+                            <li><a href="edytuj seanse.html?city=WROCLAW">Wrocław</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </aside>
+        <section>
+            <header class="bottom-gradient-border">
+                <div id="day-select">
+                    <span class="arrow left"></span>
+                    <div>
+                        <span>Czwartek 11.09</span>
+                        <input type="date">
+                    </div>
+                    <span class="arrow right"></span>
+                </div>
+                <ul id="legend">
+                    <li class="D2">2D</li>
+                    <li class="D3">3D</li>
+                    <li class="subtitled">Napisy</li>
+                    <li class="dubbing">Dubbing</li>
+                    <li class="lector">Lektor</li>
+                </ul>
+            </header>
+            <section id="timetable" class="bottom-gradient-border">
+                <div class="wrapper">
+                    <div class="lds-ring">
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                    </div>
+                    <div id="table">
+                        <form action="">
+                            <table> 
+                                <thead>
+                                    <tr>
+                                        <th>Godz.</th>
+                                        <th>Sala 1</th>
+                                        <th>Sala 2</th>
+                                        <th>Sala 3</th>
+                                        <th>Sala 4</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    
+                                </tbody>
+                            </table>
+                        </form>
+                    </div>
+                    <aside>
+                        <header class="bottom-gradient-border">
+                            <div class="D3">
+                                <span>2D</span>
+                                <label class="switch">
+                                    <input type="checkbox" name="D3" id="D3" hidden>
+                                    <span class="slider round"></span>
+                                </label>
+                                <span>3D</span>
+                            </div>
+                            <select name="sound-type" id="sound-type">
+                                <option value="subtitled" selected>Napisy</option>
+                                <option value="dubbed">Dubbing</option>
+                                <option value="lector">Lektor</option>
+                            </select>
+                        </header>
+                    </aside>
+                </div>
+            </section>
+        </section>
+    </main>
+    <script src="scripts/main.js"></script>
+    <script src="scripts/admin.js"></script>
+    <script src="scripts/edit%20screenings.js"></script>
+</body>
+</html>
