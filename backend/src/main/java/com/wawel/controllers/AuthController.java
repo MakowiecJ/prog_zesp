@@ -1,11 +1,11 @@
 package com.wawel.controllers;
 
-import com.wawel.dto.LoginDto;
-import com.wawel.dto.SignUpDto;
 import com.wawel.entity.auth.Role;
 import com.wawel.entity.auth.User;
 import com.wawel.persistence.repositories.auth.RolesRepository;
 import com.wawel.persistence.repositories.auth.UsersRepository;
+import com.wawel.request.authentication.LoginRequest;
+import com.wawel.request.authentication.RegisterRequest;
 import com.wawel.response.GeneralUserInfoResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -36,14 +36,16 @@ public class AuthController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    @PostMapping("/signin")
-    public ResponseEntity<GeneralUserInfoResponse> authenticateUser(@RequestBody LoginDto loginDto){
+    @PostMapping("/login")
+    public ResponseEntity<GeneralUserInfoResponse> authenticateUser(@RequestBody LoginRequest loginRequest){
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-                loginDto.getUsernameOrEmail(), loginDto.getPassword()));
+            loginRequest.getUsername(),
+            loginRequest.getPassword())
+        );
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        User user = usersRepository.findByUsernameOrEmail(loginDto.getUsernameOrEmail(), loginDto.getUsernameOrEmail()).orElseThrow();
+        User user = usersRepository.findByUsernameOrEmail(loginRequest.getUsername(), loginRequest.getUsername()).orElseThrow();
         GeneralUserInfoResponse response = GeneralUserInfoResponse.builder()
                 .userId(user.getId())
                 .username(user.getUsername())
@@ -54,24 +56,23 @@ public class AuthController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @PostMapping("/signup")
-    public ResponseEntity<String> registerUser(@RequestBody SignUpDto signUpDto){
-
+    @PostMapping("/register")
+    public ResponseEntity<String> registerUser(@RequestBody RegisterRequest registerRequest){
         // add check for username exists in a DB
-        if(Boolean.TRUE.equals(usersRepository.existsByUsername(signUpDto.getUsername()))){
+        if (usersRepository.existsByUsername(registerRequest.getUsername())) {
             return new ResponseEntity<>("Username is already taken!", HttpStatus.BAD_REQUEST);
         }
 
         // add check for email exists in DB
-        if(Boolean.TRUE.equals(usersRepository.existsByEmail(signUpDto.getEmail()))){
+        if (usersRepository.existsByEmail(registerRequest.getEmail())) {
             return new ResponseEntity<>("Email is already taken!", HttpStatus.BAD_REQUEST);
         }
 
         // create user object
         User user = new User();
-        user.setUsername(signUpDto.getUsername());
-        user.setEmail(signUpDto.getEmail());
-        user.setPassword(passwordEncoder.encode(signUpDto.getPassword()));
+        user.setUsername(registerRequest.getUsername());
+        user.setEmail(registerRequest.getEmail());
+        user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
 
         Role roles = rolesRepository.findByName("role_user").orElseThrow();
         user.setRoles(Collections.singleton(roles));
@@ -79,6 +80,5 @@ public class AuthController {
         usersRepository.save(user);
 
         return new ResponseEntity<>("User registered successfully", HttpStatus.OK);
-
     }
 }

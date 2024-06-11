@@ -32,35 +32,4 @@ public class UsersController {
 //        return service.buyTickets(request);
 //    }
 
-//    @GetMapping("/screening/{screeningId}")
-//    public GetScreeningResponse getScreening(@PathVariable final Long screeningId) {
-//        return service.getScreening(screeningId);
-//    }
-
-//    @PostMapping("/screening")
-//    public ResponseEntity<String> addScreening(@RequestBody final AddScreeningRequest request) {
-//        return service.addScreening(request);
-//    }
-
-//    @DeleteMapping("screening/{screeningId}")
-//    public ResponseEntity<String> deleteScreening(@PathVariable final Long screeningId) {
-//        return service.deleteScreening(screeningId);
-//    }
-
-//    @GetMapping("/repertoire")
-//    public ResponseEntity<?> getRepertoire(
-//            @RequestParam final City city,
-//            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) final LocalDate date) {
-//        return service.getRepertoire(GetRepertoireRequest.of(city, date));
-//    }
-
-//    @PostMapping("/repertoire/edit")
-//    public ResponseEntity<?> editRepertoire(final @RequestBody EditRepertoireRequest request) {
-//        return service.editRepertoire(request);
-//    }
-
-//    @PostMapping("/repertoire")
-//    public GetRepertoireResponse addRepertoire(@RequestBody final AddRepertoireRequest request) {
-//        return service.addRepertoire(request);
-//    }
 }

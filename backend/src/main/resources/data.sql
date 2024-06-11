@@ -14,7 +14,8 @@ CREATE TABLE movies
 	trailer_source            VARCHAR(2083),
 	big_image_source          VARCHAR(2083)
 );
-INSERT INTO movies(title, genre, min_age, ads_duration, movie_duration, cleaning_service_duration, status, description, big_image_source)
+INSERT INTO movies(title, genre, min_age, ads_duration, movie_duration, cleaning_service_duration, status, description,
+									 big_image_source)
 VALUES ('Avatar: Istota wody',
 				'Sci-Fi',
 				13,
@@ -55,8 +56,10 @@ CREATE TABLE cinemas
 	phone_number VARCHAR(255) NOT NULL
 );
 INSERT INTO cinemas (id, street, postal_code, city, mail_address, phone_number)
-VALUES ('fd06eb55-41df-47ed-83e6-feadf772f50e', 'ul. Karmelicka 45', '31-038', 'Kraków', 'krakow@wawel.pl', '123321643'),
-			 ('ead20929-eef5-4e75-9af9-3136d60c08b3', 'ul. Korfantego 123', '40-038', 'Katowice', 'katowice@wawel.pl', '368982615'),
+VALUES ('fd06eb55-41df-47ed-83e6-feadf772f50e', 'ul. Karmelicka 45', '31-038', 'Kraków', 'krakow@wawel.pl',
+				'123321643'),
+			 ('ead20929-eef5-4e75-9af9-3136d60c08b3', 'ul. Korfantego 123', '40-038', 'Katowice', 'katowice@wawel.pl',
+				'368982615'),
 			 ('4ee3b17d-6dad-4e84-9ecb-f22bbb33c2ad', 'ul. Oleska 45', '45-058', 'Opole', 'opole@wawel.pl', '118827625'),
 			 ('3af27140-0ebc-471a-a6aa-3bd120dc1503', 'ul. Oławska 89', '50-115', 'Wrocław', 'wroclaw@wawel.pl', '898142765'),
 			 ('b8dbb76f-92e3-400d-bd5f-2e743a61a178', 'ul. Słowackiego 67', '59-800', 'Lubań', 'luban@wawel.pl', '121224987');
@@ -111,3 +114,48 @@ CREATE TABLE screenings
 	FOREIGN KEY (screen_id) REFERENCES screens (id),
 	FOREIGN KEY (movie_id) REFERENCES movies (id)
 );
+
+
+DROP TABLE IF EXISTS users;
+CREATE TABLE users
+(
+	id       UUID         NOT NULL DEFAULT RANDOM_UUID() PRIMARY KEY,
+	username VARCHAR(200) NOT NULL,
+	password VARCHAR(200) NOT NULL,
+	email    VARCHAR(200) NOT NULL
+);
+INSERT INTO users (id, username, password, email)
+VALUES ('ecf59248-f3d2-479f-b14d-741eefd1b323', 'administrator',
+				'$2a$10$uuXzvyevIXLJWmkA7WC2e.xM8xZZHJT0v3qdmcolz2Y3G.p2oEGjW', 'administrator@wawel.pl'),
+			 ('1fa96887-a874-4df4-a58a-3c1b24bb2b8b', 'user1', '$2a$10$/XapBAlZcXurPdFgjlKkIOwCAr0WgTt5C09hq6xcQ/X.4GsWpfUQ.',
+				'user1@gmail.com'),
+			 ('9f62d284-c523-4855-b72a-49d5bb279b2f', 'user2', '$2a$10$/XapBAlZcXurPdFgjlKkIOwCAr0WgTt5C09hq6xcQ/X.4GsWpfUQ.',
+				'user2@gmail.com'),
+			 ('937907b8-4519-4734-9982-d9e36c8b7785', 'user3', '$2a$10$/XapBAlZcXurPdFgjlKkIOwCAr0WgTt5C09hq6xcQ/X.4GsWpfUQ.',
+				'user3@gmail.com');
+
+
+DROP TABLE IF EXISTS roles;
+CREATE TABLE roles
+(
+	id   UUID         NOT NULL DEFAULT RANDOM_UUID() PRIMARY KEY,
+	name VARCHAR(100) NOT NULL
+);
+INSERT INTO roles (id, name)
+VALUES ('64900957-4772-42fb-a55c-c1c7de1d0cb4', 'administrator'),
+			 ('5df86631-3419-4baf-a28d-5f9d33d7e8d4', 'customer');
+
+
+DROP TABLE IF EXISTS user_roles;
+CREATE TABLE user_roles
+(
+	user_id UUID NOT NULL PRIMARY KEY,
+	role_id UUID NOT NULL,
+	FOREIGN KEY (user_id) REFERENCES users (id),
+	FOREIGN KEY (role_id) REFERENCES roles (id)
+);
+INSERT INTO user_roles (user_id, role_id)
+VALUES ('ecf59248-f3d2-479f-b14d-741eefd1b323', '64900957-4772-42fb-a55c-c1c7de1d0cb4'),
+			 ('1fa96887-a874-4df4-a58a-3c1b24bb2b8b', '5df86631-3419-4baf-a28d-5f9d33d7e8d4'),
+			 ('9f62d284-c523-4855-b72a-49d5bb279b2f', '5df86631-3419-4baf-a28d-5f9d33d7e8d4'),
+			 ('937907b8-4519-4734-9982-d9e36c8b7785', '5df86631-3419-4baf-a28d-5f9d33d7e8d4');
