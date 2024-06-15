@@ -7,6 +7,7 @@ import com.wawel.entity.cinema.Screen;
 import com.wawel.entity.cinema.Ticket;
 import com.wawel.entity.movies.Movie;
 import com.wawel.entity.movies.Repertoire;
+import com.wawel.entity.movies.Review;
 import com.wawel.entity.movies.Screening;
 import com.wawel.persistence.repositories.*;
 import com.wawel.persistence.repositories.auth.UsersRepository;
@@ -47,6 +48,9 @@ public class MoviesService {
 
     @Autowired
     private RepertoireRepository repertoireRepository;
+
+    @Autowired
+    private ReviewsRepository reviewsRepository;
 
     public List<GeneralMovieResponse> getMovies() {
         return moviesRepository.findAll().stream()
@@ -376,5 +380,54 @@ public class MoviesService {
         }
 
         return new ResponseEntity<>("Repertoire edited successfully", HttpStatus.OK);
+    }
+
+    public List<MovieReviewResponse> getMovieReviews(Long movieId) {
+        return moviesRepository.findById(movieId).orElseThrow().getReviews().stream()
+                .map(MoviesMapper::toMovieReviewResponse)
+                .toList();
+    }
+
+    public ResponseEntity<String> addReview(AddReviewRequest request) {
+
+        if (request.getReviewText() != null && request.getRating() == null) {
+            return new ResponseEntity<>("Nie można dodać recenzji bez oceny", HttpStatus.BAD_REQUEST);
+        }
+
+        if (request.getRating() < 1 || request.getRating() > 5) {
+            return new ResponseEntity<>("Ocena może być liczbą całkowitą z zakresu [1-5]", HttpStatus.BAD_REQUEST);
+        }
+
+        Review review = reviewsRepository.findByMovieIdAndUserId(request.getMovieId(), request.getUserId());
+        Movie movie = moviesRepository.findById(request.getMovieId()).orElseThrow();
+        User user = usersRepository.findById(request.getUserId()).orElseThrow();
+
+
+        if (review != null) {
+            review.setRating(request.getRating());
+            if (request.getReviewText() != null) {
+                review.setReviewText(request.getReviewText());
+            }
+            reviewsRepository.save(review);
+        } else {
+            Review newReview = Review.builder()
+                    .rating(request.getRating())
+                    .reviewText(request.getReviewText())
+                    .movie(movie)
+                    .user(user)
+                    .build();
+            reviewsRepository.save(newReview);
+        }
+        return new ResponseEntity<>("Pomyślnie dodano recenzję", HttpStatus.OK);
+    }
+
+    public ResponseEntity<?> getReview(Long reviewId) {
+        Optional<Review> review = reviewsRepository.findById(reviewId);
+
+        if (review.isEmpty()) {
+            return new ResponseEntity<>("Nie znaleziono takiej recenzji", HttpStatus.BAD_REQUEST);
+        } else {
+            return new ResponseEntity<>(MoviesMapper.toMovieReviewResponse(review.get()), HttpStatus.OK);
+        }
     }
 }

@@ -131,7 +131,7 @@ function isItTooLate(time, timeOffset) {
 
 function isAdmin(user) {
     for (let i = 0; i < user.roles.length; i++)
-        if (user.roles[i].name == 'role_admin')
+        if (user.roles[i].name == 'ROLE_ADMIN')
             return true
 
     return false

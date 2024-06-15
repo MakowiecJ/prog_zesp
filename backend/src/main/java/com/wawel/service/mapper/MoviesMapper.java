@@ -2,7 +2,9 @@ package com.wawel.service.mapper;
 
 import com.wawel.entity.cinema.Ticket;
 import com.wawel.entity.movies.Movie;
+import com.wawel.entity.movies.Review;
 import com.wawel.response.GeneralMovieResponse;
+import com.wawel.response.MovieReviewResponse;
 import com.wawel.response.TicketResponse;
 import lombok.experimental.UtilityClass;
 
@@ -45,5 +47,16 @@ public class MoviesMapper {
     public static String blobToString(final byte[] blob) {
         if (blob == null) return null;
         return new String(blob, StandardCharsets.UTF_8);
+    }
+
+    public static MovieReviewResponse toMovieReviewResponse(final Review review) {
+        return MovieReviewResponse.builder()
+                .id(review.getId())
+                .userId(review.getUser().getId())
+                .movieId(review.getMovie().getId())
+                .username(review.getUser().getUsername())
+                .rating(review.getRating())
+                .reviewText(review.getReviewText())
+                .build();
     }
 }
