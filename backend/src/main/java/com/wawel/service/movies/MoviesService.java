@@ -353,7 +353,7 @@ public class MoviesService {
             }
 
         }
-        return new ResponseEntity<>(GetRepertoireResponse.of(request.getCity(), request.getDate(), items), HttpStatus.OK);
+        return new ResponseEntity<>(GetRepertoireResponse.of(request.getCity(), repertoire.get().getDate(), items), HttpStatus.OK);
 
     }
 
