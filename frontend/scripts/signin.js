@@ -15,7 +15,7 @@ window.addEventListener('load', () => {
         console.log(credentials);
 
         const xhr = new XMLHttpRequest()
-        xhr.open('POST', 'http://149.156.43.57/p3/api/auth/signin', true)
+        xhr.open('POST', 'http://localhost:8083/auth/signin', true)
         xhr.setRequestHeader("content-type", "application/json")
         
         xhr.onreadystatechange = () => {

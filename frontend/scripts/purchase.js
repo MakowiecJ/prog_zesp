@@ -10,7 +10,7 @@ function calcTotal() {
 
 const screeningId = urlParams.get('screeningId')
 
-const seats = fetch('http://149.156.43.57/p3/api/movies/screening/' + screeningId)
+const seats = fetch('http://localhost:8083/movies/screening/' + screeningId)
     .then((response) => response.json())
     .then((data) => {
         return data
