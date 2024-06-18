@@ -1,0 +1,32 @@
+services:
+  nginx-reverse-proxy:
+    container_name: nginx-reverse-proxy
+    image: nginx:1.19.4
+    restart: always
+    volumes:
+      - ./nginx/:/etc/nginx/
+    ports:
+      - 80:80
+      - 443:443
+    depends_on:
+      - frontend
+      - backend
+  frontend:
+    image: "kino-frontend:latest"
+    build:
+      context: "frontend"
+      dockerfile: "Dockerfile"
+    ports:
+      - "8088:8088"
+  backend:
+    image: "kino:latest"
+    build:
+      context: "backend"
+      dockerfile: "Dockerfile"
+    ports:
+      - "8083:8083"
+      - "8080:8080"
+    depends_on:
+      - frontend
+
+
