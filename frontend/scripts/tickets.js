@@ -1,6 +1,6 @@
 const cityToCityLocalized = { 'KATOWICE': 'Katowice', 'KRAKOW': 'Kraków', 'LUBAN': 'Lubań', 'OPOLE': 'Opole', 'WROCLAW': 'Wrocław' }
 
-const tickets = fetch('https://wawel.herokuapp.com/movies/users/' + user.userId)
+const tickets = fetch('http://localhost:8083/api/movies/users/' + user.userId)
     .then((response) => response.json())
     .then((data) => {
         return data

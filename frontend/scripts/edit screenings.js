@@ -47,7 +47,7 @@ function updateSchedule() {
     changesSaved = false
     
     const xhr = new XMLHttpRequest()
-    xhr.open('POST', 'https://wawel.herokuapp.com/movies/repertoire/edit', true)
+    xhr.open('POST', 'http://localhost:8083/api/movies/repertoire/edit', true)
     xhr.setRequestHeader("content-type", "application/json")
     
     xhr.onreadystatechange = () => {
@@ -199,7 +199,7 @@ function addEventListeners() {
             const xhr = new XMLHttpRequest()
             const id = cell.id.slice(cell.id.indexOf('_') + 1)
 
-            xhr.open('DELETE', 'https://wawel.herokuapp.com/movies/screening/' + id, true)
+            xhr.open('DELETE', 'http://localhost:8083/api/movies/screening/' + id, true)
             xhr.setRequestHeader("content-type", "application/json")
 
             xhr.onreadystatechange = () => {
@@ -280,7 +280,7 @@ function addEventListeners() {
     document.querySelector('#screenings li:nth-child(' + cityToSelector[city] + ')').classList.add('active')
 }
 
-const movies = fetch('https://wawel.herokuapp.com/movies')
+const movies = fetch('http://localhost:8083/api/movies')
     .then((response) => response.json())
     .then((data) => {
         return data
@@ -329,7 +329,7 @@ const getMovies = async () => {
 }
 
 const getRepertoire = async (city, date) => {
-    const repertoire = fetch('https://wawel.herokuapp.com/movies/repertoire?city=' + city + '&date=' + date)
+    const repertoire = fetch('http://localhost:8083/api/movies/repertoire?city=' + city + '&date=' + date)
         .then((response) => response.json())
         .then((data) => {
             return data
