@@ -17,3 +17,8 @@ spring:
       ddl-auto: update
 jwt:
   secret: 'YmNkZTdmZWRjYTJmZGQ2NTZhYjI4YjhiZGYyOWMzNGY2ODk3ODExNTM3MjA3NmVkMjQ0MGUyMmYyOWFiMzc4ZA=='
+logging:
+  level:
+    org:
+      springframework:
+        web: DEBUG
