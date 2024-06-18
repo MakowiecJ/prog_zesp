@@ -153,7 +153,7 @@ function addEventListeners() {
             description: document.querySelector('#description').value
         }
 
-        let path = 'http://localhost:8083/movies'
+        let path = 'https://wawel.herokuapp.com/movies'
         
         if (id) {
             data.movieId = id
@@ -187,7 +187,7 @@ function addEventListeners() {
 
 const id = urlParams.get('id')
 
-const movie = fetch('http://localhost:8083/movies/' + id)
+const movie = fetch('https://wawel.herokuapp.com/movies/' + id)
     .then((response) => response.json())
     .then((data) => {
         return data

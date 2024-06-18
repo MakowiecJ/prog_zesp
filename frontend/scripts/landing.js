@@ -31,7 +31,7 @@ function addEventListeners() {
     cycleMovie(1) // Hack: refresh images
 }
 
-const movies = fetch('http://localhost:8083/movies')
+const movies = fetch('https://wawel.herokuapp.com/movies')
     .then((response) => response.json())
     .then((data) => {
         return data

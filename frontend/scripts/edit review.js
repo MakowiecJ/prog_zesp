@@ -57,7 +57,7 @@ function addEventListeners() {
         }
 
         const xhr = new XMLHttpRequest()
-        xhr.open('POST', 'http://localhost:8083/movies/reviews', true)
+        xhr.open('POST', 'https://wawel.herokuapp.com/movies/reviews', true)
         xhr.setRequestHeader("content-type", "application/json")
 
         xhr.onreadystatechange = () => {
@@ -90,13 +90,13 @@ function addEventListeners() {
 const id = urlParams.get('id')
 const movieId = urlParams.get('movieId')
 
-const review = fetch('http://localhost:8083/movies/review/' + id)
+const review = fetch('https://wawel.herokuapp.com/movies/review/' + id)
     .then((response) => response.json())
     .then((data) => {
         return data
     })
 
-const movies = fetch('http://localhost:8083/movies/' + movieId)
+const movies = fetch('https://wawel.herokuapp.com/movies/' + movieId)
     .then((response) => response.json())
     .then((data) => {
         return data

@@ -1,4 +1,4 @@
-const reviews = fetch('http://localhost:8083/movies/users/' + user.userId)
+const reviews = fetch('https://wawel.herokuapp.com/movies/users/' + user.userId)
     .then((response) => response.json())
     .then((data) => {
         return data
@@ -22,7 +22,7 @@ const getReviews = async () => {
         
         const h2 = listing.querySelector('h2 a')
 
-        const movies = fetch('http://localhost:8083/movies/' + review.movieId)
+        const movies = fetch('https://wawel.herokuapp.com/movies/' + review.movieId)
             .then((response) => response.json())
             .then((data) => {
                 return data

@@ -42,7 +42,7 @@ seats.forEach((seat) => {
 })
 
 const xhr = new XMLHttpRequest()
-xhr.open('POST', 'http://localhost:8083/movies/tickets/buy', true)
+xhr.open('POST', 'https://wawel.herokuapp.com/movies/tickets/buy', true)
 xhr.setRequestHeader("content-type", "application/json")
 
 xhr.onreadystatechange = () => {

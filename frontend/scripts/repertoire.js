@@ -93,7 +93,7 @@ const getMovies = async (city, date) => {
     const loader = createElementFromHTML('<div class="lds-ring"> <div></div> <div></div> <div></div> <div></div> </div>')
     document.querySelector('main div.wrapper').appendChild(loader)
 
-    const movies = fetch('http://localhost:8083/movies/repertoire?city=' + city + '&date=' + date)
+    const movies = fetch('https://wawel.herokuapp.com/movies/repertoire?city=' + city + '&date=' + date)
         .then((response) => response.json())
         .then((data) => {
             return data
