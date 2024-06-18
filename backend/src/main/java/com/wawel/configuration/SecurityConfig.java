@@ -34,13 +34,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private CustomUserDetailsService userDetailsService;
 
-    @Autowired
-    private JwtUtil jwtUtil;
+//    @Autowired
+//    private JwtUtil jwtUtil;
 
-    @Bean
-    public JwtRequestFilter jwtRequestFilter() {
-        return new JwtRequestFilter(userDetailsService, jwtUtil);
-    }
+//    @Bean
+//    public JwtRequestFilter jwtRequestFilter() {
+//        return new JwtRequestFilter(userDetailsService, jwtUtil);
+//    }
 
     @Bean
     PasswordEncoder passwordEncoder(){
@@ -59,7 +59,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("*").permitAll()
                 .antMatchers("/api/auth/**").permitAll()
                 .antMatchers("**/swagger-ui/**").permitAll()
-//                .anyRequest().authenticated()
+                .anyRequest().authenticated()
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 

@@ -1,6 +1,5 @@
 package com.wawel.persistence.controllers;
 
-import com.wawel.configuration.JwtUtil;
 import com.wawel.dto.LoginDto;
 import com.wawel.dto.SignUpDto;
 import com.wawel.entity.auth.Role;
@@ -38,8 +37,8 @@ public class AuthController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    @Autowired
-    private JwtUtil jwtUtil;
+//    @Autowired
+//    private JwtUtil jwtUtil;
 
     @PostMapping("/signin")
     public ResponseEntity<GeneralUserInfoResponse> authenticateUser(@RequestBody LoginDto loginDto) {
@@ -55,7 +54,7 @@ public class AuthController {
                 .username(user.getUsername())
                 .email(user.getEmail())
                 .roles(user.getRoles())
-                .token(jwtUtil.generateToken((UserDetails) authentication.getPrincipal())) // Add JWT token to response
+//                .token(jwtUtil.generateToken((UserDetails) authentication.getPrincipal())) // Add JWT token to response
                 .build();
 
         return new ResponseEntity<>(response, HttpStatus.OK);
