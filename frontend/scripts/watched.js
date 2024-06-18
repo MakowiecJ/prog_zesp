@@ -34,7 +34,7 @@ function addEventListeners() {
             }
 
             const xhr = new XMLHttpRequest()
-            xhr.open('POST', 'http://localhost:8083/api/movies/reviews', true)
+            xhr.open('POST', 'http://149.156.43.57/p3/api/movies/reviews', true)
             xhr.setRequestHeader("content-type", "application/json")
 
             xhr.onreadystatechange = () => {
@@ -65,7 +65,7 @@ function addEventListeners() {
     })
 }
 
-const watched = fetch('http://localhost:8083/api/movies/users/' + user.userId)
+const watched = fetch('http://149.156.43.57/p3/api/movies/users/' + user.userId)
     .then((response) => response.json())
     .then((data) => {
         return data
