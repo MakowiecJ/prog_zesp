@@ -47,7 +47,7 @@ function updateSchedule() {
     changesSaved = false
     
     const xhr = new XMLHttpRequest()
-    xhr.open('POST', 'http://149.156.43.57/p3/api/movies/repertoire/edit', true)
+    xhr.open('POST', 'http://149.156.43.57/p3/api/movies/repertoire/edit/', true)
     xhr.setRequestHeader("content-type", "application/json")
     
     xhr.onreadystatechange = () => {
@@ -280,7 +280,7 @@ function addEventListeners() {
     document.querySelector('#screenings li:nth-child(' + cityToSelector[city] + ')').classList.add('active')
 }
 
-const movies = fetch('http://149.156.43.57/p3/api/movies')
+const movies = fetch('http://149.156.43.57/p3/api/movies/')
     .then((response) => response.json())
     .then((data) => {
         return data
@@ -329,7 +329,7 @@ const getMovies = async () => {
 }
 
 const getRepertoire = async (city, date) => {
-    const repertoire = fetch('http://149.156.43.57/p3/api/movies/repertoire?city=' + city + '&date=' + date)
+    const repertoire = fetch('http://149.156.43.57/p3/api/movies/repertoire?city=' + city + '&date=' + date + "/")
         .then((response) => response.json())
         .then((data) => {
             return data

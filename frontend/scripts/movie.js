@@ -17,7 +17,7 @@ const id = urlParams.get('id')
 let city = urlParams.get('city') || 'KRAKOW'
 const date = urlParams.get('date') || new Date().toISOString().slice(0, 10)
 
-const movie = fetch('http://149.156.43.57/p3/api/movies/' + id)
+const movie = fetch('http://149.156.43.57/p3/api/movies/' + id + "/")
     .then((response) => response.json())
     .then((data) => {
         return data
@@ -54,7 +54,7 @@ const getMovie = async () => {
 }
 
 const getScreenings = async () => {
-    const screenings = fetch('http://149.156.43.57/p3/api/movies/repertoire?city=' + city + '&date=' + date)
+    const screenings = fetch('http://149.156.43.57/p3/api/movies/repertoire?city=' + city + '&date=' + date + "/")
         .then((response) => response.json())
         .then((data) => {
             data = data.items
@@ -92,7 +92,7 @@ const getScreenings = async () => {
     }
 }
 
-const reviews = fetch('http://149.156.43.57/p3/api/movies/reviews/' + id)
+const reviews = fetch('http://149.156.43.57/p3/api/movies/reviews/' + id) + "/"
     .then((response) => response.json())
     .then((data) => {
         return data
