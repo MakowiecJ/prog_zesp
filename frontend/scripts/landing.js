@@ -31,7 +31,7 @@ function addEventListeners() {
     cycleMovie(1) // Hack: refresh images
 }
 
-const movies = fetch('http://149.156.43.57/p3/api/movies/')
+const movies = fetch('http://149.156.43.57/p3/api/movies')
     .then((response) => response.json())
     .then((data) => {
         return data

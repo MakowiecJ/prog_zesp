@@ -1,4 +1,4 @@
-const reviews = fetch('http://149.156.43.57/p3/api/movies/users/' + user.userId + "/")
+const reviews = fetch('http://149.156.43.57/p3/api/movies/users/' + user.userId)
     .then((response) => response.json())
     .then((data) => {
         return data
@@ -22,7 +22,7 @@ const getReviews = async () => {
         
         const h2 = listing.querySelector('h2 a')
 
-        const movies = fetch('http://149.156.43.57/p3/api/movies/' + review.movieId + "/")
+        const movies = fetch('http://149.156.43.57/p3/api/movies/' + review.movieId)
             .then((response) => response.json())
             .then((data) => {
                 return data

@@ -153,11 +153,11 @@ function addEventListeners() {
             description: document.querySelector('#description').value
         }
 
-        let path = 'http://149.156.43.57/p3/api/movies/'
+        let path = 'http://149.156.43.57/p3/api/movies'
         
         if (id) {
             data.movieId = id
-            path += '/edit'
+            path += '/edit/'
         }        
 
         console.log(path, data)
@@ -187,7 +187,7 @@ function addEventListeners() {
 
 const id = urlParams.get('id')
 
-const movie = fetch('http://149.156.43.57/p3/api/movies/' + id + "/")
+const movie = fetch('http://149.156.43.57/p3/api/movies/' + id)
     .then((response) => response.json())
     .then((data) => {
         return data
