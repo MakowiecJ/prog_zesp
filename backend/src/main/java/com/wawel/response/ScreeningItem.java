@@ -17,7 +17,7 @@ import java.time.LocalTime;
 public class ScreeningItem {
     private Long screeningId;
     private ScreenName screenName;
-    private LocalTime startTime;
+    private String startTime;
     private MovieType movieType;
     private MovieSoundType movieSoundType;
 }

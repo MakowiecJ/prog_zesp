@@ -19,8 +19,8 @@ import java.util.List;
 public class TicketsByScreeningResponse {
     private Long screeningId;
     private City city;
-    private LocalDate date;
-    private LocalTime startTime;
+    private String date;
+    private String startTime;
     private String movieTitle;
     private Long movieId;
     private ScreenName screenName;

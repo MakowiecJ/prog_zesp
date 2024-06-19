@@ -1,6 +1,8 @@
 package com.wawel.persistence.controllers;
 
 import com.wawel.common.City;
+import com.wawel.common.TicketType;
+import com.wawel.entity.movies.Genre;
 import com.wawel.entity.movies.Movie;
 import com.wawel.request.*;
 import com.wawel.response.*;
@@ -9,10 +11,10 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.List;
 
 @RestController
@@ -35,10 +37,48 @@ public class CinemaController {
         return service.getMovies();
     }
 
+    @GetMapping("/cinemas")
+    public List<CinemaResponse> getCinemas() {
+        return service.getCinemas();
+    }
+
+    @GetMapping("/genres")
+    public List<Genre> getGenres() {
+        return List.of(Genre.values());
+    }
+
+    @GetMapping("discount/{discountCode}")
+    public Float checkDiscount(@PathVariable final String discountCode) {
+        if ("WAWEL_5".equals(discountCode)) {
+            return 0.95f;
+        } else if ("WAWEL_10".equals(discountCode)) {
+            return 0.9f;
+        }
+
+        return 0f;
+    }
+
+    @GetMapping("/ticketTypes")
+    public List<TicketTypesResponse> getTicketTypes() {
+        return Arrays.stream(TicketType.values())
+                .map(it -> TicketTypesResponse.of(TicketType.getTypeId(it), it.name(), it.getValue()))
+                .toList();
+    }
+
+    @GetMapping("/screening/{screeningId}/tickets")
+    public List<TicketResponse> getScreeningTickets(@PathVariable final String screeningId) {
+        return service.getScreeningTickets(screeningId);
+    }
+
     @GetMapping("/{movieId}")
     public GeneralMovieResponse getMovie(@PathVariable final Long movieId) {
         return service.getMovie(movieId);
     }
+
+//    @GetMapping("/userTickets/{userId}")
+//    public List<UserTicket> getUserTickets(@PathVariable final String userid) {
+//        service.getUserTickets(userId);
+//    }
 
     @DeleteMapping("{movieId}")
 //    @Secured("ROLE_ADMIN")

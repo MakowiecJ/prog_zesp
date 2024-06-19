@@ -1,10 +1,7 @@
 package com.wawel.request;
 
 import com.wawel.common.City;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.ToString;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -13,6 +10,7 @@ import java.util.List;
 @ToString
 @AllArgsConstructor
 @Builder
+@NoArgsConstructor
 public class EditRepertoireRequest {
     private City city;
     private LocalDate date;

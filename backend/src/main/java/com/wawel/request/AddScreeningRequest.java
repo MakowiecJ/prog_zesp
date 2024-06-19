@@ -4,10 +4,7 @@ import com.wawel.common.City;
 import com.wawel.common.MovieSoundType;
 import com.wawel.common.MovieType;
 import com.wawel.common.ScreenName;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.ToString;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -16,6 +13,7 @@ import java.time.LocalTime;
 @ToString
 @AllArgsConstructor
 @Builder
+@NoArgsConstructor
 public class AddScreeningRequest {
     private City city;
     private ScreenName screenName;

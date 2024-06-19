@@ -1,12 +1,12 @@
 package com.wawel.request;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.ToString;
+import lombok.*;
 
 @Getter
 @ToString
 @AllArgsConstructor
+@Builder
+@NoArgsConstructor
 public class AddMovieRequest {
 
     private String title;

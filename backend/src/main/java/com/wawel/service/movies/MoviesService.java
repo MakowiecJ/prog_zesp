@@ -5,10 +5,7 @@ import com.wawel.entity.auth.User;
 import com.wawel.entity.cinema.Cinema;
 import com.wawel.entity.cinema.Screen;
 import com.wawel.entity.cinema.Ticket;
-import com.wawel.entity.movies.Movie;
-import com.wawel.entity.movies.Repertoire;
-import com.wawel.entity.movies.Review;
-import com.wawel.entity.movies.Screening;
+import com.wawel.entity.movies.*;
 import com.wawel.persistence.repositories.*;
 import com.wawel.persistence.repositories.auth.UsersRepository;
 import com.wawel.request.*;
@@ -170,8 +167,8 @@ public class MoviesService {
                 screeningIdToGroupedTickets.put(screeningId, TicketsByScreeningResponse.builder()
                         .screeningId(screeningId)
                         .city(ticket.getScreening().getRepertoire().getCinema().getCity())
-                        .date(ticket.getScreening().getRepertoire().getDate())
-                        .startTime(ticket.getScreening().getStartTime())
+                        .date(ticket.getScreening().getRepertoire().getDate().toString())
+                        .startTime(ticket.getScreening().getStartTime().toString())
                         .movieTitle(ticket.getScreening().getMovie().getTitle())
                         .movieId(ticket.getScreening().getMovie().getId())
                         .screenName(ticket.getScreening().getScreen().getScreenName())
@@ -179,7 +176,7 @@ public class MoviesService {
                         .build());
             } else {
 
-                TicketsByScreeningResponse updatedTicket=  new TicketsByScreeningResponse(screeningIdToGroupedTickets.get(screeningId));
+                TicketsByScreeningResponse updatedTicket = new TicketsByScreeningResponse(screeningIdToGroupedTickets.get(screeningId));
                 updatedTicket.addTicket(MoviesMapper.toTicketResponse(ticket));
 
                 screeningIdToGroupedTickets.replace(screeningId, updatedTicket);
@@ -206,7 +203,7 @@ public class MoviesService {
                 .movieId(screening.getMovie().getId())
                 .repertoireId(screening.getRepertoire().getId())
                 .date(screening.getRepertoire().getDate())
-                .startTime(screening.getStartTime())
+                .startTime(screening.getStartTime().toString())
                 .movieType(screening.getMovieType())
                 .movieSoundType(screening.getMovieSoundType())
                 .seats(screening.getSeats())
@@ -328,7 +325,7 @@ public class MoviesService {
 
                         screeningToMovie.put(screening.getMovie().getId(), List.of(ScreeningItem.builder()
                                 .screeningId(screening.getId())
-                                .startTime(screening.getStartTime())
+                                .startTime(screening.getStartTime().toString())
                                 .screenName(screening.getScreen().getScreenName())
                                 .movieType(screening.getMovieType())
                                 .movieSoundType(screening.getMovieSoundType())
@@ -338,7 +335,7 @@ public class MoviesService {
 
                         screeningItems.add(ScreeningItem.builder()
                                 .screeningId(screening.getId())
-                                .startTime(screening.getStartTime())
+                                .startTime(screening.getStartTime().toString())
                                 .screenName(screening.getScreen().getScreenName())
                                 .movieType(screening.getMovieType())
                                 .movieSoundType(screening.getMovieSoundType())
@@ -429,5 +426,31 @@ public class MoviesService {
         } else {
             return new ResponseEntity<>(MoviesMapper.toMovieReviewResponse(review.get()), HttpStatus.OK);
         }
+    }
+
+    public List<CinemaResponse> getCinemas() {
+        return cinemasRepository.findAll().stream()
+                .map(it -> CinemaResponse.builder()
+                        .id(it.getId())
+                        .address(it.getAddress())
+                        .phoneNumber(it.getPhoneNumber())
+                        .city(it.getCity())
+                        .build())
+                .toList();
+    }
+
+    public List<TicketResponse> getScreeningTickets(String screeningId) {
+        var screening = screeningsRepository.findById(Long.valueOf(screeningId)).orElseThrow();
+
+        return screening.getTickets().stream()
+                .map(it -> TicketResponse.builder()
+                        .id(it.getId())
+                        .ticketType(it.getTicketType())
+                        .seatRow(it.getSeatRow())
+                        .seatNumber(it.getSeatNumber())
+                        .build())
+                .sorted(Comparator.comparing(TicketResponse::getSeatRow))
+                .sorted(Comparator.comparing(TicketResponse::getSeatNumber))
+                .toList();
     }
 }
