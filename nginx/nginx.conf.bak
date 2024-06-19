@@ -61,7 +61,7 @@ http {
     }
 
     location /p3/ {
-	    proxy_pass http://frontend:8088/;
+	    proxy_pass http://localhost:8088/;
 
 	    add_header 'Access-Control-Allow-Origin' '*';
         add_header 'Access-Control-Allow-Methods' 'GET, POST, PUT, DELETE, OPTIONS';
