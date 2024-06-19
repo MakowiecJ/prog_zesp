@@ -20,7 +20,7 @@ import java.util.List;
 @RestController
 @AllArgsConstructor
 @CrossOrigin(origins = "*", allowedHeaders = "*", exposedHeaders = "*")
-@RequestMapping("/api/movies")
+@RequestMapping("/movies")
 public class CinemaController {
 
     @Autowired
