@@ -11,7 +11,7 @@ function addEventListeners() {
             const id = btn.getAttribute('data-id')
 
             const xhr = new XMLHttpRequest()
-            xhr.open('POST', 'http://localhost:8083/movies/archive/' + id , true)
+            xhr.open('POST', 'http://localhost:8083/api/movies/archive/' + id , true)
             xhr.setRequestHeader("content-type", "application/json")
 
             xhr.onreadystatechange = () => {
@@ -36,7 +36,7 @@ function addEventListeners() {
     })
 }
 
-const movies = fetch('http://localhost:8083/movies')
+const movies = fetch('http://localhost:8083/api/movies')
     .then((response) => response.json())
     .then((data) => {
         return data
